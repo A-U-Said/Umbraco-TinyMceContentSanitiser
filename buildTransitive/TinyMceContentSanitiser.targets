@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TinyMceContentSanitiserContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\TinyMceContentSanitiser\**\*.*</TinyMceContentSanitiserContentFilesPath>
+  </PropertyGroup>
+
+  <Target Name="CopyTinyMceContentSanitiserAssets" BeforeTargets="Build">
+    <ItemGroup>
+      <TinyMceContentSanitiserContentFiles Include="$(TinyMceContentSanitiserContentFilesPath)" />
+    </ItemGroup>
+    <Message Text="Copying TinyMceContentSanitiser files: $(TinyMceContentSanitiserContentFilesPath) - #@(TinyMceContentSanitiserContentFiles->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(TinyMceContentSanitiserContentFiles)" DestinationFiles="@(TinyMceContentSanitiserContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\TinyMceContentSanitiser\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="ClearTinyMceContentSanitiserAssets" BeforeTargets="Clean">
+    <ItemGroup>
+      <TinyMceContentSanitiserDir Include="$(MSBuildProjectDirectory)\App_Plugins\TinyMceContentSanitiser\" />
+    </ItemGroup>
+    <Message Text="Clear old TinyMceContentSanitiser data" Importance="high" />
+    <RemoveDir Directories="@(TinyMceContentSanitiserDir)" />
+  </Target>
+</Project>
